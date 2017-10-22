@@ -2,11 +2,13 @@
 package peerprocess;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+
 
 
 class Host{
@@ -40,7 +42,7 @@ class Process{
     }
     private void readCommon() throws IOException{
         try{
-            List<String> configLines = Files.readAllLines(Paths.get("Common.cfg"));
+            List<String> configLines = Files.readAllLines(Paths.get("Common.cfg"), Charset.forName("US-ASCII"));
             for(String line : configLines){
                 String[] words = line.split(" ");
                 String var = words[0];
@@ -76,7 +78,7 @@ class Process{
     
     }
     private void readPeers(int id) throws IOException{
-        List<String> peerLines = Files.readAllLines(Paths.get("PeerInfo.cfg"));
+        List<String> peerLines = Files.readAllLines(Paths.get("PeerInfo.cfg"), Charset.forName("US-ASCII"));
         for(String line : peerLines){
             //parsing each line for [peer id] [host-name] [port] [has-file]
             String[] tokens = line.split(" ");
@@ -109,6 +111,7 @@ public class PeerProcess {
             p = new Process(Integer.parseInt(args[0]));
             System.out.println(p.fileName);
         } catch (IOException e){
+            e.printStackTrace();
             return;
         } catch (Exception e){
             e.printStackTrace();
